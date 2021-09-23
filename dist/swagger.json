@@ -9,5 +9,98 @@
             "url": "https://opensource.org/licenses/MIT"
         }
     },
-    "paths": {}
+    "servers": [
+        {
+            "url": "/api/movies",
+            "description": "Local Dev, or from deployment"
+        }
+    ],
+    "tags": [
+        {
+            "name": "Movies",
+            "description": "API for movies in the swapi"
+        }
+    ],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "paths": {
+        "/": {
+            "get": {
+                "tags": ["Movies"],
+                "summary": "Get all movies in system",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "/api/movies"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Comments"],
+                "summary": "Create a new comment in system",
+                "requestBody": {
+                    "description": "Comment Object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/id/comment"
+                            }
+                        }
+                    }
+                },
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/id/comment"
+                        }
+                    },
+                    "400": {
+                        "description": "Failed. Bad post data."
+                    }
+                }
+            }
+        }
+    },
+    "/id/cats": {
+        "parameters": [
+            {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "description": "ID of the comment that we want to match",
+                "type": "string"
+            }
+        ],
+        "get": {
+            "tags": ["Comment"],
+            "summary": "Get comment with given ID",
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "description": "Comment with id",
+                    "schema": {
+                        "$ref": "#/definitions/id"
+                    }
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "OK",
+                    "schema": {
+                        "$ref": "#/definitions/Cat"
+                    }
+                },
+                "404": {
+                    "description": "Failed. Cat not found."
+                }
+            }
+        }
+    }
 }

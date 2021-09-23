@@ -1,23 +1,28 @@
 import express from 'express';
 const router = express.Router();
+import {getMovie, getMovieById, getMovieComentById, createMovieComent, getMovieCharacter} from '../controllers/request'
 
 
-// /**
-//  * @swagger
-//  * paths:
-//  *  /:
-//  *   get:
-//  *     description: Get all swapi
-//  *     responses:
-//  *       200:
-//  *         description: Success
-//  *
-//  */
+/* GET all movie. */
+router.get('/', getMovie)
 
-/* GET home page. */
-router.get('/', function (req, res) {
-  return res.status(200).json('Welcome to FinTrack');
-});
+/* GET movie by id. */
+router.get('/:id', getMovieById)
 
+
+/* GET all movie character. */
+
+router.get('/:id/characters', getMovieCharacter)
+
+
+/* GET comment by id. */
+
+router.get('/:id/comments', getMovieComentById)
+
+
+
+/* POST movie comment. */
+
+router.post('/:id/comments', createMovieComent)
 
 export default router;

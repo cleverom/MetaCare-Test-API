@@ -10,19 +10,17 @@ import cors from 'cors';
 import indexRouter from './routes/index';
 import swaggerDocs from './swagger.json';
 
-// const swaggerOptions = {
-//   swaggerDefinition: {
-//     info: {
-//       title: 'MetaCare API',
-//       version: '1.0.0',
-//     },
-//   },
-//   apis: [`${__dirname}/dist/routes/index.js`],
-// };
+import db from "./models";
+
+import movies from './routes/index';
+
 
 dotenv.config();
 let app = express();
 
+db.sequelize.sync({ force: true }).then(() => {
+    console.log("Drop and re-sync db.");
+  });
 
 // console.log(swaggerDocs);
 // view engine setup
@@ -35,7 +33,7 @@ app.use(cookieParser());
 // const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
-app.use('/', indexRouter);
+app.use('/api/movies', movies);
 
 
 
@@ -59,15 +57,7 @@ app.use(function (
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.send(err.message);
 });
 
 export default app;
-
-
-//complete swagger setup
-//conect to database
-//complete implementation of API
-// dockerize application
-// deploy application
-//write unit test for the endpoints using jest and supertest

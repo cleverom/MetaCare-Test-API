@@ -10,19 +10,14 @@ var dotenv_1 = __importDefault(require("dotenv"));
 var cookie_parser_1 = __importDefault(require("cookie-parser"));
 var morgan_1 = __importDefault(require("morgan"));
 var cors_1 = __importDefault(require("cors"));
-var index_1 = __importDefault(require("./routes/index"));
 var swagger_json_1 = __importDefault(require("./swagger.json"));
-// const swaggerOptions = {
-//   swaggerDefinition: {
-//     info: {
-//       title: 'MetaCare API',
-//       version: '1.0.0',
-//     },
-//   },
-//   apis: [`${__dirname}/dist/routes/index.js`],
-// };
+var models_1 = __importDefault(require("./models"));
+var index_1 = __importDefault(require("./routes/index"));
 dotenv_1.default.config();
 var app = (0, express_1.default)();
+models_1.default.sequelize.sync({ force: true }).then(function () {
+    console.log("Drop and re-sync db.");
+});
 // console.log(swaggerDocs);
 // view engine setup
 app.use((0, cors_1.default)());
@@ -32,7 +27,7 @@ app.use(express_1.default.urlencoded({ extended: false }));
 app.use((0, cookie_parser_1.default)());
 // const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use('/api-docs', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_json_1.default));
-app.use('/', index_1.default);
+app.use('/api/movies', index_1.default);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     next((0, http_errors_1.default)(404));
@@ -44,12 +39,6 @@ app.use(function (err, req, res, next) {
     res.locals.error = req.app.get('env') === 'development' ? err : {};
     // render the error page
     res.status(err.status || 500);
-    res.render('error');
+    res.send(err.message);
 });
 exports.default = app;
-//complete swagger setup
-//conect to database
-//complete implementation of API
-// dockerize application
-// deploy application
-//write unit test for the endpoints using jest and supertest
