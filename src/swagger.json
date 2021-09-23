@@ -1,0 +1,13 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+      "version": "1.0.0",
+      "title": "MetaCare Api",
+      "description": "A swapi API that displays statistics and comments",
+      "license": {
+          "name": "MIT",
+          "url": "https://opensource.org/licenses/MIT"
+      }
+  }
+}
+
