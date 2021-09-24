@@ -11,7 +11,6 @@ var dotenv_1 = __importDefault(require("dotenv"));
 var cookie_parser_1 = __importDefault(require("cookie-parser"));
 var morgan_1 = __importDefault(require("morgan"));
 var cors_1 = __importDefault(require("cors"));
-// import swaggerDocs from './swagger.json';
 var models_1 = __importDefault(require("./models"));
 var index_1 = __importDefault(require("./routes/index"));
 // swagger definitions

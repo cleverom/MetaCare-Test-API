@@ -27,13 +27,14 @@ router.get('/', getMovie);
  * /api/movies/{id}:
  *  get:
  *    description: Use to request movies by id
+ *    operationId: getMovieById
  *    parameters:
- *      - name: movie by id
+ *      - name: id
  *        in: path
  *        required: true
  *        schema:
- *          type: string
- *          format: string
+ *          type: integer
+ *          format: int64
  *    responses:
  *      '200':
  *        description: A successful response
@@ -43,55 +44,89 @@ router.get('/:id', getMovieById);
 /* GET all movie character. */
 /**
  * @swagger
- * /api/movies/{id}/characters:
+ * /api/movies/{characters}/{id}?sortOrder={namesAscending}&gender={male}:
  *  get:
  *    description: Use to request all movies characters by id
+ *    operationId: getMovieCharacter
+ *    operationCharacter: getMovieCharacter
  *    parameters:
  *      - name: character by id
  *        in: path
  *        required: true
  *        schema:
- *          type: string
- *          format: string
- *    responses:
- *      '200':
- *        description: A successful response
- */
-router.get('/:id/characters', getMovieCharacter);
-
-/* GET comment by id. */
-/**
- * @swagger
- * /api/movies/{id}/comments:
- *  get:
- *    description: Use to request movie comments by id
- *    parameters:
- *      - name: comments by id
+ *          type: integer
+ *          format: int64
+ *      - name: character name
  *        in: path
  *        required: true
  *        schema:
  *          type: string
  *          format: string
- *    responses:
- *      '200':
- *        description: A successful response
- */
-router.get('/:id/comments', getMovieComentById);
-
-/* POST movie comment. */
-/**
- * @swagger
- * /api/movies/{id}/comment:
- *    post:
- *      description: Use to create comments
- *      parameters:
- *      - name: comment
- *        in: body
- *        description: to make comments
+ *      - name: sort
+ *        in: query
+ *        description: sort by asc or desc order
+ *        required: false
+ *      - name: sort by gender
+ *        in: query
+ *        description: sort by gender
  *        required: false
  *        schema:
  *          type: string
  *          format: string
+ *    responses:
+ *      '200':
+ *        description: A successful response
+ */
+router.get(
+  '/characters/:id?sortOrder={namesAscending}&gender={male}',
+  getMovieCharacter,
+);
+
+/* GET comment by id. */
+/**
+ * @swagger
+ * /api/movies/comments/{id}:
+ *  get:
+ *    description: Use to request movie comments by id
+ *    operationId: getMovieComentById
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        required: true
+ *        schema:
+ *          type: integer
+ *          format: int64
+ *    responses:
+ *      '200':
+ *        description: A successful response
+ */
+router.get('/comments/:id', getMovieComentById);
+
+/* POST movie comment. */
+/**
+ * @swagger
+ * /api/movies/{id}/comments:
+ *    post:
+ *      description: Use to create comments
+ *      operationId: createMovieComent
+ *      parameters:
+ *      - name: id
+ *        in: path
+ *        required: true
+ *        schema:
+ *          type: string
+ *          format: string
+ *      - name: message
+ *        in: body
+ *        description: to make comments
+ *        required: false
+ *        schema:
+ *          type: object
+ *          required:
+ *            - message
+ *          properties:
+ *            message:
+ *               type: string
  *    responses:
  *      '201':
  *        description: Successfully created comments
