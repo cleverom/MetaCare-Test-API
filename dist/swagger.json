@@ -9,6 +9,13 @@
             "url": "https://opensource.org/licenses/MIT"
         }
     },
+    "definitions": {
+        "id": {
+            "Integer": {
+                "type": "Number"
+            }
+        }
+    },
     "servers": [
         {
             "url": "/api/movies",
@@ -32,41 +39,43 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "/api/movies"
+                            "$ref": "#/definitions/api/movies"
                         }
-                    }
-                }
-            },
-            "post": {
-                "tags": ["Comments"],
-                "summary": "Create a new comment in system",
-                "requestBody": {
-                    "description": "Comment Object",
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/id/comment"
-                            }
-                        }
-                    }
-                },
-                "produces": ["application/json"],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/id/comment"
-                        }
-                    },
-                    "400": {
-                        "description": "Failed. Bad post data."
                     }
                 }
             }
         }
     },
-    "/id/cats": {
+    "/id/comment": {
+        "post": {
+            "tags": ["Comments"],
+            "summary": "Create a new comment in system",
+            "requestBody": {
+                "description": "Comment Object",
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/id/comment"
+                        }
+                    }
+                }
+            },
+            "produces": ["application/json"],
+            "responses": {
+                "200": {
+                    "description": "OK",
+                    "schema": {
+                        "$ref": "#/id/comment"
+                    }
+                },
+                "400": {
+                    "description": "Failed. Bad post data."
+                }
+            }
+        }
+    },
+    "/id/comment": {
         "parameters": [
             {
                 "name": "id",

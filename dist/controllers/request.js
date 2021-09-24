@@ -270,3 +270,4 @@ function getMovieCharacter(req, res) {
     });
 }
 exports.getMovieCharacter = getMovieCharacter;
+//# sourceMappingURL=request.js.map

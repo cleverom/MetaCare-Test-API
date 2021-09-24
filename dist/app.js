@@ -5,14 +5,40 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var http_errors_1 = __importDefault(require("http-errors"));
 var express_1 = __importDefault(require("express"));
+var swagger_jsdoc_1 = __importDefault(require("swagger-jsdoc"));
 var swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
 var dotenv_1 = __importDefault(require("dotenv"));
 var cookie_parser_1 = __importDefault(require("cookie-parser"));
 var morgan_1 = __importDefault(require("morgan"));
 var cors_1 = __importDefault(require("cors"));
-var swagger_json_1 = __importDefault(require("./swagger.json"));
+// import swaggerDocs from './swagger.json';
 var models_1 = __importDefault(require("./models"));
 var index_1 = __importDefault(require("./routes/index"));
+// swagger definitions
+var swaggerOptions = {
+    swaggerDefinition: {
+        info: {
+            title: 'MetaCare API',
+            version: '1.0.0',
+            description: 'API for movies and comments with statistics',
+        },
+        host: 'localhost:4000',
+        basePath: '/api/movies',
+        components: {
+            securitySchemes: {
+                BasicAuth: {
+                    type: "http",
+                    scheme: "basic"
+                }
+            }
+        },
+        security: {
+            basicAuth: []
+        },
+        openapi: "3.0.0",
+    },
+    apis: [__dirname + "/routes/index.js"],
+};
 dotenv_1.default.config();
 var app = (0, express_1.default)();
 models_1.default.sequelize.sync({ force: true }).then(function () {
@@ -26,7 +52,9 @@ app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
 app.use((0, cookie_parser_1.default)());
 // const swaggerDocs = swaggerJsDoc(swaggerOptions);
-app.use('/api-docs', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_json_1.default));
+// app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+var swaggerDocs = (0, swagger_jsdoc_1.default)(swaggerOptions);
+app.use("/api-docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swaggerDocs));
 app.use('/api/movies', index_1.default);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -42,3 +70,4 @@ app.use(function (err, req, res, next) {
     res.send(err.message);
 });
 exports.default = app;
+//# sourceMappingURL=app.js.map

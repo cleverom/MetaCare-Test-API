@@ -6,11 +6,36 @@ import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import cors from 'cors';
-import swaggerDocs from './swagger.json';
-
+// import swaggerDocs from './swagger.json';
 import db from "./models";
 
 import movies from './routes/index';
+
+// swagger definitions
+const swaggerOptions = {
+  swaggerDefinition: {
+      info: {
+        title: 'MetaCare API',
+        version: '1.0.0',
+        description: 'API for movies and comments with statistics',
+      },
+      host: 'localhost:4000',
+      basePath: '/api/movies',
+      components: {
+          securitySchemes: {
+              BasicAuth: {
+                  type: "http",
+                  scheme: "basic"
+              }
+          }
+      },
+      security: {
+          basicAuth: []
+      },
+      openapi: "3.0.0",
+  },
+  apis: [`${__dirname}/routes/index.js`],
+}
 
 
 dotenv.config();
@@ -29,7 +54,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 // const swaggerDocs = swaggerJsDoc(swaggerOptions);
-app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+// app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+
 
 app.use('/api/movies', movies);
 
